@@ -2,6 +2,8 @@
 
 import { MouseEvent, useState } from "react";
 import styles from "@/app/assets/styles/main.module.scss";
+import Image from 'next/image';
+import AddImage from "@/app/assets/images/add_image.png";
 
 interface IMESSAGE {
   role: string;
@@ -75,40 +77,13 @@ export default function Home() {
     }
   };
 
-  // const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-  //   event.preventDefault();
-  //   const droppedFile = event.dataTransfer.files[0];
-
-  //   const files = event.dataTransfer.files;
-  //   const reader = new FileReader();
-
-  //   reader.onloadend = () => {
-  //     const base64 = reader.result?.toString().split(",")[1];
-  //     if (base64) {
-  //       setBase64Image(base64);  
-  //     }
-  //   };
-
-  //   console.log(files, "::: files")
-
-  //   if (files.length > 0) {
-  //     const file = files[0];
-  //     reader.readAsDataURL(file);
-  //   }
-
-  //   if (droppedFile) {
-  //     setImage(droppedFile);
-  //   }
-  // };
-
-  // const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-  //   event.preventDefault();
-  // };
-
   const handleSubmit = async () => {
 
     // TODO: loading 처리할 것!
     if (!question && !base64Image) return;
+
+    // 질문 초기화
+    setQuestion("");
 
     const userMessage: IMESSAGE = { role: "user", content: question };
     setChatHistory([...chatHistory, userMessage]);
@@ -171,6 +146,23 @@ export default function Home() {
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     const newFile = event.dataTransfer.files?.[0];
+
+    const files = event.dataTransfer.files;
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const base64 = reader.result?.toString().split(",")[1];
+      if (base64) {
+        setBase64Image(base64);
+      }
+      console.log(base64, "::: base64");
+    };
+
+    if (files.length > 0) {
+      const file = files[0];
+      reader.readAsDataURL(file);
+    }
+
     if (newFile) {
       setFile(newFile);
       const reader = new FileReader();
@@ -223,67 +215,37 @@ export default function Home() {
   //   };
   // };
 
+  const handleKeyPress = (e: any) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
+  };
+
+  const PUBI = `</PUBI>`;
+
   return (
-    <main>
-      <div className={styles.wrapper}>
-        {/* <div className={styles.input_area}>
-          <input
-            type="text"
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            placeholder="Ask a question..."
-          />
-          <button onClick={handleQuestionSubmit}>Ask</button>
+    <>
+      <div className={styles.left_container}>
+        <div className={styles.logo}>
+          <Image src={AddImage} alt="image" width={50} />
+          <span>{`=>`}</span>
+          <h1>{PUBI}</h1>
         </div>
-        <div id="chatHistory">
-          {chatHistory.map((message, index) => (
-            <div key={index} className={`message ${message.role}`}>
-              {message.role === "user" ? "User: " : "Assistant: "}
-              {message.content}
-            </div>
-          ))}
-        </div> */}
 
-        {/* 이미지 첨부 */}
-        {/* <div
-          className={styles.input_area}
-          onDrop={handleDrop}
-          onDragOver={handleDragOver}
-          style={{ border: "1px solid red" }}
-        >
-          <input
-            type="text"
-            placeholder="Enter your message"
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-          />
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            style={{ display: "none" }}
-          />
-          <label
-            htmlFor="fileInput"
-            style={{ border: "1px solid white", height: "200px" }}
-          ></label>
-          <button onClick={handleSubmit}>Submit</button>
-        </div> */}
-
-        <div className={styles.left}>
+        <div className={styles.left_content}>
           <div
             onDrop={handleDrop}
             onDragOver={handleDragOver}
-            style={{
-              border: "2px dashed #ccc",
-              borderRadius: "4px",
-              padding: "20px",
-              textAlign: "center",
-              marginBottom: "20px",
-            }}
+            className={styles.image_area}
           >
             {preview ? (
-              <img src={preview} alt="Preview" style={{ maxWidth: "100%" }} />
+              <Image
+                src={preview}
+                alt="Preview"
+                width={150}
+                height={150}
+                style={{ width: "100%", height: "auto", maxWidth: "100%" }}
+              />
             ) : (
               <p>Drag & drop an image here, or click to select one</p>
             )}
@@ -298,6 +260,7 @@ export default function Home() {
             placeholder="Enter text here"
             value={question}
             onChange={handleTextChange}
+            onKeyDown={(e) => handleKeyPress(e)}
             style={{
               width: "100%",
               padding: "10px",
@@ -305,21 +268,34 @@ export default function Home() {
               boxSizing: "border-box",
             }}
           />
-          <button onClick={handleSubmit}>submit</button>
-        </div>
-        <div className={styles.right}>
-          <code>{response}</code>
-        </div>
-
-        <div className={styles.right}>
-          {chatHistory.map((message, index) => (
-            <div key={index} className={`message ${message.role}`}>
-              {message.role === "user" ? "User: " : "Assistant: "}
-              {message.content}
-            </div>
-          ))}
+          <button className={styles.submit_btn} onClick={handleSubmit}>
+            SUBMIT
+          </button>
         </div>
       </div>
-    </main>
+
+
+
+
+      <div className={styles.right_container}>
+
+        <div className={styles.right_box}>
+            
+          {chatHistory.length === 0 ? (
+            <div className={styles.empty}>질문을 해야징 대충 어케 되는지 설명해주까?</div>    
+          ) : (
+            chatHistory.map((message, index) => (
+            <div
+              key={index}
+              className={`${styles.message} ${styles[message.role]}`}
+            >
+              {message.content}
+            </div>
+          ))
+          )}
+          
+        </div>
+      </div>
+    </>
   );
 }

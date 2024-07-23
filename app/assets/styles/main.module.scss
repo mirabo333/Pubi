@@ -1,13 +1,107 @@
-.wrapper {
-  width: 100%;
-  max-width: 1200px;
-  min-height: 100vh;
-  margin: 50px auto 0;
+.left_container {
+  position: fixed;
   display: flex;
-  flex-direction: row;
-  gap: 30px;
+  flex-direction: column;
+  width: 500px;
+  height: 100vh;
+  border-right: 1px solid #dddddd;
+  -webkit-box-shadow: 10px 4px 19px -8px rgba(0,0,0,0.35);
+  -moz-box-shadow: 10px 4px 19px -8px rgba(0,0,0,0.35);
+  box-shadow: 10px 4px 19px -8px rgba(0,0,0,0.35);
+  padding: 30px;
 
+  .logo {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    height: 150px;
 
+    span {
+      font-size: 22px;
+    }
+
+    h1 {
+      font-family: "Roboto mono", monospace;
+      font-optical-sizing: auto;
+      font-style: normal;
+    }
+  }
   
+  .left_content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  .image_area {
+    border: 2px dashed #ccc;
+    border-radius: 4px;
+    padding: 20px;
+    text-align: center;
+    min-height: 350px;
+  }
+
+  .submit_btn {
+    padding: 8px 15px;
+    border-radius: 5px;
+    background: #466CA6;
+    border: 1px solid #3e68a8;
+    font-size: 16px;
+    display: inline-flex;
+    width: 100px;
+    justify-content: center;
+    align-self: flex-end;
+    color: #ffffff;
+  }
+
+
 
 }
+
+.right_container {
+
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding-left: 570px;
+  padding: 30px 30px 30px 570px;
+
+  .right_box {
+    width: calc(100% - 30px);
+    min-height: calc(100vh - 60px);
+    background: rgba(29, 77, 159, 0.2);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    gap: 15px;
+
+    &.empty {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+    }
+  
+    .message {
+      padding: 10px;
+
+      &.user {
+        // user
+        align-self: flex-end;
+        padding-right: 50px;
+        background: url("../images/ic-user.png") no-repeat;
+        background-size: 30px 30px;
+        background-position: right 5px;
+      }
+      &.assistant {
+        // gpt
+        align-self: flex-start;
+        background: #466CA6;
+        color: #ffffff;
+        border-radius: 5px;
+      }
+    }
+  }
+}
+

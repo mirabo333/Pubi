@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
 
       payload.messages[0].content.push({
         type: "text",
-        text: "이미지를 react, css코드로 변환해서 코드만 보여줘"
+        text: "이미지를 분석해서 최대한 정확하게 react, css코드로 변환해서 코드만 보여줘"
       })
 
       console.log(payload.message, "::: payloadMessage");
