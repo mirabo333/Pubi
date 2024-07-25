@@ -2,8 +2,9 @@
 
 import { MouseEvent, useState } from "react";
 import styles from "@/app/assets/styles/main.module.scss";
-import Image from 'next/image';
+import Image from "next/image";
 import AddImage from "@/app/assets/images/add_image.png";
+import MarkdownView from "./components/MarkdownViewer";
 
 interface IMESSAGE {
   role: string;
@@ -48,17 +49,16 @@ export default function Home() {
         content: data.answer,
       };
 
-      console.log(response, ":::response")
+      console.log(response, ":::response");
 
       if (response.ok) {
         setChatHistory((prevChatHistory) => [
           ...prevChatHistory,
           assistantMessage,
-        ]);  
+        ]);
       } else {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      
     } catch (error) {
       console.error("Error:", error);
       const errorMessage: IMESSAGE = {
@@ -78,7 +78,6 @@ export default function Home() {
   };
 
   const handleSubmit = async () => {
-
     // TODO: loading 처리할 것!
     if (!question && !base64Image) return;
 
@@ -89,12 +88,11 @@ export default function Home() {
     setChatHistory([...chatHistory, userMessage]);
 
     console.log(userMessage, "::: userMessage");
-      
+
     const formData: any = {
       question: question ? question : "",
       image: base64Image ? base64Image : "",
     };
-
 
     try {
       const response = await fetch("/api/imageai", {
@@ -104,7 +102,7 @@ export default function Home() {
       });
 
       const data = await response.json();
-      console.log(JSON.stringify(data), 676767676666)
+      console.log(JSON.stringify(data), 676767676666);
       setResponse(data.answer);
 
       const assistantMessage: IMESSAGE = {
@@ -122,14 +120,11 @@ export default function Home() {
       } else {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
     } catch (error) {
       console.error("Error:", error);
       setResponse("An error occurred while processing the request.");
     }
   };
-
-
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newFile = event.target.files?.[0];
@@ -180,8 +175,6 @@ export default function Home() {
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuestion(event.target.value);
   };
-
-
 
   // const handleSubmit = async () => {
   //   if (!image && !image) return;
@@ -274,26 +267,25 @@ export default function Home() {
         </div>
       </div>
 
-
-
-
       <div className={styles.right_container}>
-
         <div className={styles.right_box}>
-            
           {chatHistory.length === 0 ? (
-            <div className={styles.empty}>질문을 해야징 대충 어케 되는지 설명해주까?</div>    
+            <div className={styles.empty}>
+              질문을 해야징 대충 어케 되는지 설명해주까?
+            </div>
           ) : (
             chatHistory.map((message, index) => (
-            <div
-              key={index}
-              className={`${styles.message} ${styles[message.role]}`}
-            >
-              {message.content}
-            </div>
-          ))
+              <>
+                <div
+                  key={index}
+                  className={`${styles.message} ${styles[message.role]}`}
+                >
+                  {message.content}
+                </div>
+                <MarkdownView text={message.content} />
+              </>
+            ))
           )}
-          
         </div>
       </div>
     </>

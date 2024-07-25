@@ -1,0 +1,11 @@
+.markdown-view > pre {
+  max-width: 800px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+}
+
+pre code.hljs {
+  border-radius: 10px;
+  padding: 1.5em;
+}
