@@ -31,26 +31,57 @@
     display: flex;
     flex-direction: column;
     gap: 30px;
+
+    .image_area {
+      border: 2px dashed #ccc;
+      border-radius: 4px;
+      padding: 20px;
+
+      text-align: center;
+      min-height: 350px;
+    }
+
+    .inputs {
+        border: 1px solid #dddddd;
+        display: flex; 
+        padding: 0 12px;
+        
+        label {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+        }
+
+        > input {
+          border: 0;
+
+          &:focus {
+            outline: none;
+          }
+        }
+
+        &.active {
+          border: 1px solid #3e68a8;
+        }
+    }
   }
-  .image_area {
-    border: 2px dashed #ccc;
-    border-radius: 4px;
-    padding: 20px;
-    text-align: center;
-    min-height: 350px;
-  }
+  
 
   .submit_btn {
     padding: 8px 15px;
     border-radius: 5px;
-    background: #466CA6;
     border: 1px solid #3e68a8;
-    font-size: 16px;
     display: inline-flex;
-    width: 100px;
+    width: 40px;
     justify-content: center;
     align-self: flex-end;
     color: #ffffff;
+    font-size: 0;
+    background: #466CA6, url("../images/ic-arrow-up.png");
+    background-repeat:  no-repeat;
+    background-size: 20px 20px;
+    background-position: center;
+
   }
 
 

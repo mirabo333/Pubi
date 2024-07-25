@@ -4,6 +4,7 @@ import { MouseEvent, useState } from "react";
 import styles from "@/app/assets/styles/main.module.scss";
 import Image from "next/image";
 import AddImage from "@/app/assets/images/add_image.png";
+import CLIPICON from "@/app/assets/images/ic-clip.png";
 import MarkdownView from "./components/MarkdownViewer";
 
 interface IMESSAGE {
@@ -22,6 +23,7 @@ export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   const [text, setText] = useState<string>("");
   const [preview, setPreview] = useState<string | null>(null);
+  const [activeInput, setActiveInput] = useState<boolean>(false);
 
   const handleQuestionSubmit = async (event: MouseEvent) => {
     event.preventDefault();
@@ -71,11 +73,11 @@ export default function Home() {
     setQuestion("");
   };
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      setImage(event.target.files[0]);
-    }
-  };
+  // const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (event.target.files && event.target.files[0]) {
+  //     setImage(event.target.files[0]);
+  //   }
+  // };
 
   const handleSubmit = async () => {
     // TODO: loading 처리할 것!
@@ -173,6 +175,7 @@ export default function Home() {
   };
 
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(1);
     setQuestion(event.target.value);
   };
 
@@ -226,11 +229,7 @@ export default function Home() {
         </div>
 
         <div className={styles.left_content}>
-          <div
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
-            className={styles.image_area}
-          >
+          <div className={styles.image_area}>
             {preview ? (
               <Image
                 src={preview}
@@ -242,39 +241,55 @@ export default function Home() {
             ) : (
               <p>Drag & drop an image here, or click to select one</p>
             )}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              style={{ display: "none" }}
-            />
           </div>
-          <input
-            placeholder="Enter text here"
-            value={question}
-            onChange={handleTextChange}
-            onKeyDown={(e) => handleKeyPress(e)}
-            style={{
-              width: "100%",
-              padding: "10px",
-              fontSize: "16px",
-              boxSizing: "border-box",
-            }}
-          />
-          <button className={styles.submit_btn} onClick={handleSubmit}>
-            SUBMIT
-          </button>
+
+          <div
+            className={`${styles.inputs} ${activeInput ? styles.active : ""}`}
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+          >
+            <label>
+              {/* TODO: file icon */}
+              <Image src={CLIPICON} width={20} height={20} alt="파일 첨부" />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+              />
+            </label>
+            <input
+              placeholder="Enter text here"
+              value={question}
+              onChange={handleTextChange}
+              onKeyDown={(e) => handleKeyPress(e)}
+              onFocus={() => setActiveInput(true)}
+              onBlur={() => setActiveInput(false)}
+              style={{
+                width: "100%",
+                padding: "10px",
+                fontSize: "16px",
+                boxSizing: "border-box",
+              }}
+            />
+
+            <button className={styles.submit_btn} onClick={handleSubmit}>
+              SUBMIT
+            </button>
+          </div>
         </div>
       </div>
 
       <div className={styles.right_container}>
         <div className={styles.right_box}>
           {chatHistory.length === 0 ? (
+            // TODO: 대충 그럴싸하게 사용 방법 설명?
             <div className={styles.empty}>
               질문을 해야징 대충 어케 되는지 설명해주까?
             </div>
           ) : (
             chatHistory.map((message, index) => (
+              // TODO: image submit 시 question 어떻게 보여줄지
               <>
                 <div
                   key={index}
