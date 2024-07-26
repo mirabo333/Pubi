@@ -16,12 +16,12 @@ export default function Home() {
   const [question, setQuestion] = useState("");
   const [chatHistory, setChatHistory] = useState<IMESSAGE[] | []>([]);
 
-  const [image, setImage] = useState<File | null>(null);
+  // const [image, setImage] = useState<File | null>(null);
   const [base64Image, setBase64Image] = useState<string>("");
   const [response, setResponse] = useState<string | undefined>("");
 
   const [file, setFile] = useState<File | null>(null);
-  const [text, setText] = useState<string>("");
+  // const [text, setText] = useState<string>("");
   const [preview, setPreview] = useState<string | null>(null);
   const [activeInput, setActiveInput] = useState<boolean>(false);
 
@@ -78,6 +78,12 @@ export default function Home() {
   //     setImage(event.target.files[0]);
   //   }
   // };
+
+  const handleDelete = () => {
+    console.log("handleDelete");
+    setPreview(null);
+    setBase64Image("");
+  };
 
   const handleSubmit = async () => {
     // TODO: loading 처리할 것!
@@ -175,7 +181,7 @@ export default function Home() {
   };
 
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(1);
+    // console.log(1);
     setQuestion(event.target.value);
   };
 
@@ -231,13 +237,16 @@ export default function Home() {
         <div className={styles.left_content}>
           <div className={styles.image_area}>
             {preview ? (
-              <Image
-                src={preview}
-                alt="Preview"
-                width={150}
-                height={150}
-                style={{ width: "100%", height: "auto", maxWidth: "100%" }}
-              />
+              <>
+                <Image
+                  src={preview}
+                  alt="Preview"
+                  width={150}
+                  height={150}
+                  style={{ width: "100%", height: "auto", maxWidth: "100%" }}
+                />
+                <button onClick={handleDelete}>delete</button>
+              </>
             ) : (
               <p>Drag & drop an image here, or click to select one</p>
             )}
