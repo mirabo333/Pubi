@@ -21,7 +21,7 @@ export default function Home() {
   const [base64Image, setBase64Image] = useState<string>("");
   const [response, setResponse] = useState<string | undefined>("");
 
-  const [file, setFile] = useState<File | null>(null);
+  // const [file, setFile] = useState<File | null>(null);
   // const [text, setText] = useState<string>("");
   const [preview, setPreview] = useState<string | null>(null);
   const [activeInput, setActiveInput] = useState<boolean>(false);
@@ -80,6 +80,25 @@ export default function Home() {
   //   }
   // };
 
+  const setImage = (file?: File) => {
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        setPreview(e.target?.result as string);
+      };
+      reader.onloadend = () => {
+        const base64 = reader.result?.toString().split(",")[1];
+        if (base64) {
+          setBase64Image(base64);
+        }
+        console.log(base64, "::: base64");
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleDelete = () => {
     setPreview(null);
     setBase64Image("");
@@ -135,48 +154,17 @@ export default function Home() {
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("file");
-    const newFile = event.target.files?.[0];
-    console.log("newFile", newFile);
-    if (newFile) {
-      setFile(newFile);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        console.log("setPreview", e.target?.result);
-        setPreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(newFile);
-    }
+    event.preventDefault();
+    const newFile: File | undefined = event.target.files?.[0];
+
+    setImage(newFile);
   };
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    const newFile = event.dataTransfer.files?.[0];
+    const newFile: File | undefined = event.dataTransfer.files?.[0];
 
-    const files = event.dataTransfer.files;
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      const base64 = reader.result?.toString().split(",")[1];
-      if (base64) {
-        setBase64Image(base64);
-      }
-      console.log(base64, "::: base64");
-    };
-
-    if (files.length > 0) {
-      const file = files[0];
-      reader.readAsDataURL(file);
-    }
-
-    if (newFile) {
-      setFile(newFile);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setPreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(newFile);
-    }
+    setImage(newFile);
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
@@ -294,7 +282,7 @@ export default function Home() {
 
       <div className={styles.right_container}>
         <div className={styles.right_box}>
-          <CodeBox html="html" css="css" js="js" text={response} />
+          <CodeBox code={response} />
           {/* {chatHistory.length === 0 ? (
             // TODO: 대충 그럴싸하게 사용 방법 설명?
             <div className={styles.empty}>
