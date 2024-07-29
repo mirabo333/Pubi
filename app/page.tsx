@@ -289,13 +289,13 @@ export default function Home() {
               SUBMIT
             </button>
           </div>
-          <CodeBox html="html" css="css" js="js" text={response} />
         </div>
       </div>
 
       <div className={styles.right_container}>
         <div className={styles.right_box}>
-          {chatHistory.length === 0 ? (
+          <CodeBox html="html" css="css" js="js" text={response} />
+          {/* {chatHistory.length === 0 ? (
             // TODO: 대충 그럴싸하게 사용 방법 설명?
             <div className={styles.empty}>
               질문을 해야징 대충 어케 되는지 설명해주까?
@@ -313,7 +313,7 @@ export default function Home() {
                 <MarkdownViewer text={message.content} />
               </>
             ))
-          )}
+          )} */}
         </div>
       </div>
     </>

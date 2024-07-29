@@ -101,12 +101,8 @@ const IframeViewer = ({
   };
   return (
     <>
-      <button onClick={retryRender}>retry</button>
-      <iframe
-        title="react-codepen-editor"
-        className="td"
-        id={"iframe-code-preview"}
-      />
+      {/* <button onClick={retryRender}>retry</button> */}
+      <iframe title="react-codepen-editor" id="iframe-code-preview" />
     </>
   );
 };

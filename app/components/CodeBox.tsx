@@ -13,7 +13,7 @@ const CodeBox = ({
   js?: string;
   text?: string;
 }) => {
-  const [tab, setTab] = useState<"html" | "css" | "js" | "preview">("html");
+  const [tab, setTab] = useState<"html" | "css" | "js">("html");
   const [code, setCode] = useState<string>("");
 
   const [codeBlock, setCodeBlock] = useState<{
@@ -67,25 +67,38 @@ const CodeBox = ({
   useEffect(() => {
     console.log(codeBlock);
   }, [codeBlock]);
-  const handleTabClick = (tabKey: "html" | "css" | "js" | "preview") => {
+  const handleTabClick = (tabKey: "html" | "css" | "js") => {
     setTab(tabKey);
   };
 
   return (
     <>
       <div className="codebox container">
-        <ul className="codebox tab-nav">
-          <li onClick={() => handleTabClick("html")}>html</li>
-          <li onClick={() => handleTabClick("css")}>css</li>
-          <li onClick={() => handleTabClick("js")}>js</li>
-          <li onClick={() => handleTabClick("preview")}>preview</li>
+        <div className="preview">
+          <IframeViewer css={codeBlock.css} js={codeBlock.js}></IframeViewer>
+        </div>
+        <ul className="tab-nav">
+          <li
+            className={tab == "html" ? "on" : ""}
+            onClick={() => handleTabClick("html")}
+          >
+            html
+          </li>
+          <li
+            className={tab == "css" ? "on" : ""}
+            onClick={() => handleTabClick("css")}
+          >
+            css
+          </li>
+          <li
+            className={tab == "js" ? "on" : ""}
+            onClick={() => handleTabClick("js")}
+          >
+            js
+          </li>
         </ul>
-        <div className="codebox tab-content">
-          {tab == "preview" ? (
-            <IframeViewer css={codeBlock.css} js={codeBlock.js}></IframeViewer>
-          ) : (
-            <MarkdownViewer text={"```" + codeBlock[tab] + "```"} />
-          )}
+        <div className="tab-content">
+          <MarkdownViewer text={"```" + codeBlock[tab] + "```"} />
         </div>
       </div>
     </>
