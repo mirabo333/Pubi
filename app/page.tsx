@@ -5,7 +5,8 @@ import styles from "@/app/assets/styles/main.module.scss";
 import Image from "next/image";
 import AddImage from "@/app/assets/images/add_image.png";
 import CLIPICON from "@/app/assets/images/ic-clip.png";
-import MarkdownView from "./components/MarkdownViewer";
+import MarkdownViewer from "./components/MarkdownViewer";
+import CodeBox from "./components/CodeBox";
 
 interface IMESSAGE {
   role: string;
@@ -80,7 +81,6 @@ export default function Home() {
   // };
 
   const handleDelete = () => {
-    console.log("handleDelete");
     setPreview(null);
     setBase64Image("");
   };
@@ -135,11 +135,14 @@ export default function Home() {
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("file");
     const newFile = event.target.files?.[0];
+    console.log("newFile", newFile);
     if (newFile) {
       setFile(newFile);
       const reader = new FileReader();
       reader.onload = (e) => {
+        console.log("setPreview", e.target?.result);
         setPreview(e.target?.result as string);
       };
       reader.readAsDataURL(newFile);
@@ -286,6 +289,7 @@ export default function Home() {
               SUBMIT
             </button>
           </div>
+          <CodeBox html="html" css="css" js="js" text={response} />
         </div>
       </div>
 
@@ -306,7 +310,7 @@ export default function Home() {
                 >
                   {message.content}
                 </div>
-                <MarkdownView text={message.content} />
+                <MarkdownViewer text={message.content} />
               </>
             ))
           )}

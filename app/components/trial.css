@@ -12,3 +12,28 @@ pre code.hljs {
   border-radius: 10px;
   padding: 1.5em;
 }
+
+.codebox.container {
+  border: 1px solid;
+  height: 250px;
+}
+
+.codebox > .tab-nav {
+  border: 1px solid red;
+  height: 50px;
+}
+.codebox > .tab-nav > li {
+  display: inline-block;
+  width: 25%;
+  border: 1px solid red;
+  height: 50px;
+}
+.codebox > .tab-content {
+  border: 1px solid blue;
+  height: 200px;
+}
+
+.td {
+  width: 100%;
+  height: 200px;
+}
