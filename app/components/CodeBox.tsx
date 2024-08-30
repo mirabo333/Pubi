@@ -3,25 +3,23 @@ import MarkdownViewer from "./MarkdownViewer";
 import IframeViewer from "./IframeViewer";
 
 const CodeBox = ({
-  html = "",
+  // html = "",
   css = "",
   js = "",
   text = "",
 }: {
-  html?: string;
+  // html?: string;
   css?: string;
   js?: string;
   text?: string;
 }) => {
-  const [tab, setTab] = useState<"html" | "css" | "js">("html");
+  const [tab, setTab] = useState<"css" | "js">("js");
   const [code, setCode] = useState<string>("");
 
   const [codeBlock, setCodeBlock] = useState<{
-    html: string;
     css: string;
     js: string;
   }>({
-    html: "",
     css: "",
     js: "",
   });
@@ -29,7 +27,7 @@ const CodeBox = ({
   useEffect(() => {
     if (!text) return;
 
-    const cd = { html: "", css: "", js: "" };
+    const cd = { css: "", js: "" };
     const blocks = text?.split("```") || [];
 
     blocks.forEach((block) => {
@@ -67,7 +65,7 @@ const CodeBox = ({
   useEffect(() => {
     console.log(codeBlock);
   }, [codeBlock]);
-  const handleTabClick = (tabKey: "html" | "css" | "js") => {
+  const handleTabClick = (tabKey: "css" | "js") => {
     setTab(tabKey);
   };
 

@@ -315,7 +315,7 @@ export default function Home() {
               <Image src={LOADINGGIF} width={211} height={374} alt="loading" />
             </>
           ) : (
-            <CodeBox html="html" css="css" js="js" text={response} />
+            <CodeBox css="css" js="js" text={response} />
             // {/* {chatHistory.length === 0 ? (
             //   // TODO: 대충 그럴싸하게 사용 방법 설명?
             //   <div className={styles.empty}>
