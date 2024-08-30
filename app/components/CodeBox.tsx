@@ -41,9 +41,9 @@ const CodeBox = ({
         case "css":
           cd.css = block;
           break;
-        case "htm":
-          cd.html = block;
-          break;
+        // case "htm":
+        //   cd.html = block;
+        //   break;
       }
     });
 
@@ -52,9 +52,9 @@ const CodeBox = ({
 
   useEffect(() => {
     switch (tab) {
-      case "html":
-        setCode(html);
-        break;
+      // case "html":
+      //   setCode(html);
+      //   break;
       case "css":
         setCode(css);
         break;
@@ -62,7 +62,7 @@ const CodeBox = ({
         setCode(js);
         break;
     }
-  }, [tab]);
+  }, [tab, css, js]);
 
   useEffect(() => {
     console.log(codeBlock);
@@ -78,23 +78,23 @@ const CodeBox = ({
           <IframeViewer css={codeBlock.css} js={codeBlock.js}></IframeViewer>
         </div>
         <ul className="tab-nav">
-          <li
+          {/* <li
             className={tab == "html" ? "on" : ""}
             onClick={() => handleTabClick("html")}
           >
             html
+          </li> */}
+          <li
+            className={tab == "js" ? "on" : ""}
+            onClick={() => handleTabClick("js")}
+          >
+            js
           </li>
           <li
             className={tab == "css" ? "on" : ""}
             onClick={() => handleTabClick("css")}
           >
             css
-          </li>
-          <li
-            className={tab == "js" ? "on" : ""}
-            onClick={() => handleTabClick("js")}
-          >
-            js
           </li>
         </ul>
         <div className="tab-content">

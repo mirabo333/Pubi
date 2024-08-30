@@ -15,6 +15,7 @@ const MarkdownViewer = ({ text }: { text?: string }) => {
   return (
     <>
       <div className="markdown-view">
+        {/* eslint-disable-next-line */}
         <ReactMarkdown children={text} rehypePlugins={[rehypeHighlight]} />
       </div>
     </>
