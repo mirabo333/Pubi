@@ -63,7 +63,7 @@ const CodeBox = ({
   }, [tab, css, js]);
 
   useEffect(() => {
-    console.log(codeBlock);
+    console.log(codeBlock["js"], 898989);
   }, [codeBlock]);
   const handleTabClick = (tabKey: "css" | "js") => {
     setTab(tabKey);
