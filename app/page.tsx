@@ -5,7 +5,6 @@ import styles from "@/app/assets/styles/main.module.scss";
 import Image from "next/image";
 import AddImage from "@/app/assets/images/add_image.png";
 import CLIPICON from "@/app/assets/images/ic-clip.png";
-import MarkdownViewer from "./components/MarkdownViewer";
 import CodeBox from "./components/CodeBox";
 
 interface IMESSAGE {
