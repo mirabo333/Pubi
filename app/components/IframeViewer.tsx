@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 const IframeViewer = ({
   css,
   js,
-  children,
-}: {
+}: // children,
+{
   css?: string;
   js?: string;
-  children?: string;
+  // children?: string;
 }) => {
   const [iFrame, setIFrame] = useState<any>(null);
   const [jsString, setJsString] = useState<string>("");
