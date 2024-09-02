@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import MarkdownViewer from "./MarkdownViewer";
 import IframeViewer from "./IframeViewer";
+import COPYICON from "@/app/assets/images/ic-copy.svg";
 
 const CODE = {
   HTML: "html",
@@ -76,6 +78,13 @@ const CodeBox = ({
           ))}
         </ul>
         <div className="tab-content">
+          <Image
+            src={COPYICON}
+            alt="Copy"
+            width={18}
+            height={18}
+            className="icon"
+          />
           <MarkdownViewer text={"```" + codeBlock[tab] + "```"} />
         </div>
       </div>

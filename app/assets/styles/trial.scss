@@ -71,5 +71,9 @@
     // height: calc(50% - 50px);
     height: 400px;
     padding: 1em;
+    > .icon {
+      filter: invert(43%) sepia(9%) saturate(332%) hue-rotate(186deg)
+        brightness(90%) contrast(89%);
+    }
   }
 }
