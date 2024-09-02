@@ -30,6 +30,8 @@ const CodeBox = ({
     const cd = { css: "", js: "" };
     const blocks = text?.split("```") || [];
 
+    console.log(text, "::: text");
+
     blocks.forEach((block) => {
       switch (block.slice(0, 3)) {
         case "jsx":
@@ -44,6 +46,15 @@ const CodeBox = ({
         //   break;
       }
     });
+
+    console.log(blocks, ":???");
+    console.log(cd, ":::cd");
+
+    // if (resetCode) {
+    //   setCodeBlock({ css: "", js: "" });
+    // } else {
+    //   setCodeBlock((prev) => ({ ...prev, ...cd }));
+    // }
 
     setCodeBlock(cd);
   }, [text]);
@@ -62,11 +73,18 @@ const CodeBox = ({
     }
   }, [tab, css, js]);
 
-  useEffect(() => {
-    console.log(codeBlock["js"], 898989);
-  }, [codeBlock]);
   const handleTabClick = (tabKey: "css" | "js") => {
     setTab(tabKey);
+  };
+
+  const handleCopy = async () => {
+    try {
+      const text = codeBlock[tab];
+      await navigator.clipboard.writeText(text);
+      alert(`${tab} copied to clipboard!`);
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
   };
 
   return (
@@ -96,6 +114,11 @@ const CodeBox = ({
           </li>
         </ul>
         <div className="tab-content">
+          {text && (
+            <button className="copy-btn" onClick={handleCopy}>
+              copy
+            </button>
+          )}
           <MarkdownViewer text={"```" + codeBlock[tab] + "```"} />
         </div>
       </div>

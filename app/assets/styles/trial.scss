@@ -72,5 +72,16 @@
     // height: calc(50% - 50px);
     height: 400px;
     padding: 1em;
+    position: relative;
+
+    .copy-btn {
+      border: 1px solid 1px solid rgba(255, 255, 255, 0.5);
+      padding: 3px;
+      border-radius: 2px;
+      position: absolute;
+      right: 25px;
+      color: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+    }
   }
 }

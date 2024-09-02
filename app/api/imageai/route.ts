@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 
       payload.messages[0].content.push({
         type: "text",
-        text: "이미지를 웹 페이지로 구현해줘. 레이아웃, 색상, 폰트 등 최대한 자세히 분석해서 정확하게 컴포넌트는 컴포넌트명이 app인 react tsx 파일로 만들어주고 css는 따로 작성해줘. 컴포넌트랑 css는 둘다 보기 편하게 들여쓰기를 4로 적용해서 보여줘.",
+        text: "이미지를 웹 페이지로 구현해줘. style은 나중에 재사용할 수 있도록 변수 처리랑 최대한 mixin 형태도 활용해주고, 자세히 분석해서 컴포넌트랑 css 작성해줘. 컴포넌트는 이름이 app인 react tsx파일로  작성해주고 css도 따로 작성해줘. 컴포넌트랑 css는 둘다 보기 편하게 들여쓰기를 4로 적용해서 보여줘. 이미지가 가지고 있는  border, width, height 그리고 button style이나 font 보고 제대로 적용해줘. 이미지를 최대한 웹으로 비슷하게 표현해주면 되. 만들어준 코드로 프로젝트를 만들꺼니까",
       });
 
       console.log(payload.message, "::: payloadMessage");

@@ -1,6 +1,6 @@
 "use client";
 
-import { MouseEvent, useRef, useState } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 import styles from "@/app/assets/styles/main.module.scss";
 import Image from "next/image";
 import AddImage from "@/app/assets/images/add_image.png";
@@ -10,6 +10,8 @@ import CodeBox from "./components/CodeBox";
 import SENDICON from "@/app/assets/images/ic-send.svg";
 import LOADINGGIF from "@/app/assets/images/cat-loading.gif";
 import SIDEBARICON from "@/app/assets/images/ic-toggle.png";
+import { useTour } from "@reactour/tour";
+import { setPriority } from "os";
 
 interface IMESSAGE {
   role: string;
@@ -33,6 +35,7 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [leftOpen, setLeftOpen] = useState<boolean>(true);
+  const [resetCode, setResetCode] = useState<boolean>(false);
 
   const PUBI = `</PUBI>`;
 
@@ -93,7 +96,17 @@ export default function Home() {
     setBase64Image("");
     setQuestion("");
     // 코드 리셋
+    // setResponse("");
+  };
+
+  const handleReset = () => {
     setResponse("");
+    setPreview(null);
+    setBase64Image("");
+    setQuestion("");
+    setResetCode(true);
+
+    console.log(response, 78986789);
   };
 
   // 질문하기
@@ -179,7 +192,6 @@ export default function Home() {
       if (base64) {
         setBase64Image(base64);
       }
-      console.log(base64, "::: base64");
     };
 
     if (files.length > 0) {
@@ -217,6 +229,21 @@ export default function Home() {
     setLeftOpen(!leftOpen);
   };
 
+  const { setIsOpen } = useTour();
+  const [isFirst, setIsFirst] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const firstVisit = localStorage.getItem("isFirst") !== "false";
+
+    if (firstVisit) {
+      setIsFirst(true);
+      setIsOpen(true);
+      localStorage.setItem("isFirst", "false");
+    } else {
+      setIsFirst(false);
+    }
+  }, [setIsOpen]);
+
   return (
     <>
       <div
@@ -237,13 +264,17 @@ export default function Home() {
             <h1>{PUBI}</h1>
           </div>
 
-          <div className={styles.left_content}>
-            {/* TODO: reset 기능 추가 */}
-            <button className={styles.reset_btn} onClick={handleDelete}>
-              reset
-            </button>
+          {/* TODO: reset 기능 추가 */}
+          <button className={styles.reset_btn} onClick={handleReset}>
+            RESET
+          </button>
+          {/* <button className={styles.reset_btn} onClick={() => setIsOpen(true)}>
+            tour guide
+          </button> */}
+
+          <div className={`${styles.left_content} add-img`}>
             <div
-              className={styles.image_area}
+              className={`${styles.image_area}`}
               onDrop={handleDrop}
               onDragOver={handleDragOver}
             >
@@ -254,7 +285,11 @@ export default function Home() {
                     alt="Preview"
                     width={150}
                     height={150}
-                    style={{ width: "100%", height: "auto", maxWidth: "100%" }}
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                      maxWidth: "100%",
+                    }}
                   />
                   <button onClick={handleDelete}>delete</button>
                 </>
@@ -307,8 +342,12 @@ export default function Home() {
         </div>
       </div>
 
-      <div className={styles.right_container}>
-        <div className={`${styles.right_box} ${loading ? styles.loading : ""}`}>
+      <div className={`${styles.right_container}`}>
+        <div
+          className={`${styles.right_box} ${
+            loading ? styles.loading : ""
+          }  show-code`}
+        >
           {loading ? (
             <>
               <p>progressing...</p>
