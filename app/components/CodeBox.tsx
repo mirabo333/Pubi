@@ -4,8 +4,8 @@ import IframeViewer from "./IframeViewer";
 import COPYICON from "@/app/assets/images/ic-copy.svg";
 
 const CODE = {
-  JS: "js",
-  CSS: "css",
+  JS: "jsx",
+  CSS: "scss",
 } as const;
 type TCode = (typeof CODE)[keyof typeof CODE];
 type TCodeBlock = {
@@ -20,16 +20,16 @@ const CodeBox = ({
   const [tab, setTab] = useState<TCode>(CODE.JS);
   const [previewCss, setPreviewCss] = useState<string>('');
   const [codeBlock, setCodeBlock] = useState<TCodeBlock>({
-    js: "",
-    css: "",
+    [CODE.JS]: "",
+    [CODE.CSS]: "",
   });
 
   useEffect(() => {
-    const result: TCodeBlock = { js: "", css: "" };
+    const result: TCodeBlock = { [CODE.JS]: "", [CODE.CSS]: "" };
     const blocks = code?.split("```") || [];
 
     if (!code) {
-      if(codeBlock.css || codeBlock.js) {
+      if(codeBlock[CODE.CSS] || codeBlock[CODE.JS]) {
         setCodeBlock(result);
       }
       return;
@@ -39,10 +39,10 @@ const CodeBox = ({
       switch (block.slice(0, 3)) {
         case "jsx":
         case "tsx":
-          result.js = block;
+          result[CODE.JS] = block;
           break;
         case "scs":
-          result.css = block.slice(0, 4) == "scss" ? block : "";
+          result[CODE.CSS] = block.slice(0, 4) == "scss" ? block : "";
           break;
         case "css":
           setPreviewCss(block);
@@ -72,7 +72,7 @@ const CodeBox = ({
     <>
       <div className="codebox container">
         <div className="preview">
-          <IframeViewer css={previewCss} js={codeBlock.js}></IframeViewer>
+          <IframeViewer css={previewCss} js={codeBlock[CODE.JS]}></IframeViewer>
         </div>
         <ul className="tab-nav">
           {Object.values(CODE).map((value) => (
