@@ -68,7 +68,6 @@ const CodeBox = ({
     setCodeBlock(result);
   }, [code]);
 
-
   const handleTabClick = (tabKey: TCode) => {
     setTab(tabKey);
   };
@@ -86,52 +85,55 @@ const CodeBox = ({
   return (
     <>
       <div className="codebox container">
-        <div className="preview">
+        <div className="preview tour-preview">
+          <span>PREVIEW</span>
           <IframeViewer css={codeBlock.css} js={codeBlock.js}></IframeViewer>
         </div>
-        <ul className="tab-nav">
-          {/* <li
+        <div className="tour-codebox">
+          <ul className="tab-nav">
+            {/* <li
             className={tab == "html" ? "on" : ""}
             onClick={() => handleTabClick("html")}
           >
             html
           </li> */}
-          <li
-            className={tab == "js" ? "on" : ""}
-            onClick={() => handleTabClick("js")}
-          >
-            js
-          </li>
-          <li
-            className={tab == "css" ? "on" : ""}
-            onClick={() => handleTabClick("css")}
-          >
-            css
-          </li>
-          {Object.values(CODE).map((value) => (
             <li
-              key={`codebox-tab-key-${value}`}
-              className={tab == value ? "on" : ""}
-              onClick={() => handleTabClick(value)}
+              className={tab == "js" ? "on" : ""}
+              onClick={() => handleTabClick("js")}
             >
-              {value}
+              js
             </li>
-          ))}
-        </ul>
-        <div className="tab-content">
-          {/* {text && (
+            <li
+              className={tab == "css" ? "on" : ""}
+              onClick={() => handleTabClick("css")}
+            >
+              css
+            </li>
+            {Object.values(CODE).map((value) => (
+              <li
+                key={`codebox-tab-key-${value}`}
+                className={tab == value ? "on" : ""}
+                onClick={() => handleTabClick(value)}
+              >
+                {value}
+              </li>
+            ))}
+          </ul>
+          <div className="tab-content">
+            {/* {text && (
             <button className="copy-btn" onClick={handleCopy}>
               copy
             </button>
           )} */}
-          <Image
-            src={COPYICON}
-            alt="Copy"
-            width={18}
-            height={18}
-            className="icon"
-          />
-          <MarkdownViewer text={"```" + codeBlock[tab] + "```"} />
+            <Image
+              src={COPYICON}
+              alt="Copy"
+              width={18}
+              height={18}
+              className="icon"
+            />
+            <MarkdownViewer text={"```" + codeBlock[tab] + "```"} />
+          </div>
         </div>
       </div>
     </>
