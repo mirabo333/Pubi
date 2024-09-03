@@ -13,6 +13,7 @@ import { useTour } from "@reactour/tour";
 import { FaReact, FaSass } from "react-icons/fa";
 import { BiLogoTypescript } from "react-icons/bi";
 import Loading from "./components/Loading";
+import { FaRegTrashCan } from "react-icons/fa6";
 
 interface IMESSAGE {
   role: string;
@@ -28,10 +29,9 @@ const questionList = [
 
 export default function Home() {
   const [question, setQuestion] = useState("");
-  const [chatHistory, setChatHistory] = useState<IMESSAGE[] | []>([]);
-  const [questionHisroty, setQuestionHistory] = useState<string[]>([]);
+  // const [chatHistory, setChatHistory] = useState<IMESSAGE[] | []>([]);
+  // const [questionHisroty, setQuestionHistory] = useState<string[]>([]);
 
-  // const [image, setImage] = useState<File | null>(null);
   const [base64Image, setBase64Image] = useState<string>("");
   const [response, setResponse] = useState<string | undefined>("");
 
@@ -147,13 +147,15 @@ export default function Home() {
     setQuestion("");
 
     const userMessage: IMESSAGE = { role: "user", content: question };
-    setChatHistory([...chatHistory, userMessage]);
-    setQuestionHistory([...questionHisroty, userMessage.content]);
-
-    console.log(chatHistory, "::: chat history");
+    // setChatHistory([...chatHistory, userMessage]);
+    // setQuestionHistory([...questionHisroty, userMessage.content]);
 
     console.log(userMessage, "::: userMessage");
 
+    if (base64Image) {
+      console.log(question, 56789);
+      // question = `기존 코드에서 추가하는 거야 ${question}`;
+    }
     const formData: any = {
       question: question ? question : "",
       image: base64Image ? base64Image : "",
@@ -162,6 +164,7 @@ export default function Home() {
     try {
       // 로딩
       setLoading(true);
+
       const response = await fetch("/api/imageai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -169,24 +172,24 @@ export default function Home() {
       });
 
       const data = await response.json();
-      console.log(JSON.stringify(data), 676767676666);
+      // console.log(JSON.stringify(data), 676767676666);
       setResponse(data.answer);
 
-      const assistantMessage: IMESSAGE = {
-        role: "assistant",
-        content: data.answer,
-      };
+      // const assistantMessage: IMESSAGE = {
+      //   role: "assistant",
+      //   content: data.answer,
+      // };
 
-      console.log(assistantMessage, ":::assistantMessage");
+      // console.log(assistantMessage, ":::assistantMessage");
 
-      if (response.ok) {
-        setChatHistory((prevChatHistory) => [
-          ...prevChatHistory,
-          assistantMessage,
-        ]);
-      } else {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+      // if (response.ok) {
+      //   setChatHistory((prevChatHistory) => [
+      //     ...prevChatHistory,
+      //     assistantMessage,
+      //   ]);
+      // } else {
+      //   throw new Error(`HTTP error! Status: ${response.status}`);
+      // }
     } catch (error) {
       console.error("Error:", error);
       setResponse("An error occurred while processing the request.");
@@ -326,7 +329,9 @@ export default function Home() {
               {preview ? (
                 <>
                   <Image src={preview} alt="Preview" width={150} height={150} />
-                  <button onClick={handleDelete}>delete</button>
+                  <button onClick={handleDelete}>
+                    <FaRegTrashCan />
+                  </button>
                 </>
               ) : (
                 <p>Drag & drop an image here, or click to select one</p>
