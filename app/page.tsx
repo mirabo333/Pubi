@@ -128,8 +128,6 @@ export default function Home() {
     setBase64Image("");
     setQuestion("");
     setResetCode(true);
-
-    console.log(response, 78986789);
   };
 
   // 질문하기

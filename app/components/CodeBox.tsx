@@ -24,18 +24,21 @@ const CodeBox = ({
   });
 
   useEffect(() => {
-    if (!code) return;
-
-    const result: TCodeBlock = { css: "", js: "" };
-
+    const result: TCodeBlock = { js: "", css: "" };
     const blocks = code?.split("```") || [];
 
-    // console.log(text, "::: text");
+    if (!code) {
+      if(codeBlock.css || codeBlock.js) {
+        setCodeBlock(result);
+      }
+      return;
+    }
 
     blocks.forEach((block) => {
       switch (block.slice(0, 3)) {
         case "jsx":
         case "tsx":
+        case "typescript":
           result.js = block;
           break;
         case "css":
