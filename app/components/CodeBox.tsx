@@ -12,13 +12,9 @@ type TCodeBlock = {
   [key in TCode]: string;
 };
 
-const CodeBox = ({
-  code = "",
-}: {
-  code?: string;
-}) => {
+const CodeBox = ({ code = "" }: { code?: string }) => {
   const [tab, setTab] = useState<TCode>(CODE.JS);
-  const [previewCss, setPreviewCss] = useState<string>('');
+  const [previewCss, setPreviewCss] = useState<string>("");
   const [codeBlock, setCodeBlock] = useState<TCodeBlock>({
     [CODE.JS]: "",
     [CODE.CSS]: "",
@@ -51,8 +47,8 @@ const CodeBox = ({
     });
 
     setCodeBlock(result);
+    // eslint-disable-next-line
   }, [code]);
-
 
   const handleTabClick = (tabKey: TCode) => {
     setTab(tabKey);
@@ -71,27 +67,30 @@ const CodeBox = ({
   return (
     <>
       <div className="codebox container">
-        <div className="preview">
+        <div className="preview tour-preview">
+          <span>PREVIEW</span>
           <IframeViewer css={previewCss} js={codeBlock[CODE.JS]}></IframeViewer>
         </div>
-        <ul className="tab-nav">
-          {Object.values(CODE).map((value) => (
-            <li
-              key={`codebox-tab-key-${value}`}
-              className={tab == value ? "on" : ""}
-              onClick={() => handleTabClick(value)}
-            >
-              {value}
-            </li>
-          ))}
-        </ul>
-        <div className="tab-content">
-          {codeBlock[tab] && (
-            <button className="copy-btn" onClick={handleCopy}>
-              <COPYICON />
-            </button>
-          )}
-          <MarkdownViewer text={"```" + codeBlock[tab] + "```"} />
+        <div className="tour-codebox">
+          <ul className="tab-nav">
+            {Object.values(CODE).map((value) => (
+              <li
+                key={`codebox-tab-key-${value}`}
+                className={tab == value ? "on" : ""}
+                onClick={() => handleTabClick(value)}
+              >
+                {value}
+              </li>
+            ))}
+          </ul>
+          <div className="tab-content">
+            {codeBlock[tab] && (
+              <button className="copy-btn" onClick={handleCopy}>
+                <COPYICON />
+              </button>
+            )}
+            <MarkdownViewer text={"```" + codeBlock[tab] + "```"} />
+          </div>
         </div>
       </div>
     </>
