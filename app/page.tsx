@@ -7,15 +7,24 @@ import AddImage from "@/app/assets/images/add_image.png";
 import CLIPICON from "@/app/assets/images/ic-clip.png";
 import CodeBox from "./components/CodeBox";
 import SENDICON from "@/app/assets/images/ic-send.svg";
-import LOADINGGIF from "@/app/assets/images/cat-loading.gif";
+
 import SIDEBARICON from "@/app/assets/images/ic-toggle.png";
 import { useTour } from "@reactour/tour";
-import { setPriority } from "os";
+import { FaReact, FaSass } from "react-icons/fa";
+import { BiLogoTypescript } from "react-icons/bi";
+import Loading from "./components/Loading";
 
 interface IMESSAGE {
   role: string;
   content: string;
 }
+
+const questionList = [
+  "색상에 좀 더 신경써줘",
+  "레이아웃에 좀 더 신경써줘",
+  "이미지를 좀 더 자세히 분석하고 다시 보여줘",
+  "이미지 내부의 컨텐츠를 좀 더 자세히 분석해줘",
+];
 
 export default function Home() {
   const [question, setQuestion] = useState("");
@@ -245,11 +254,17 @@ export default function Home() {
     setLeftOpen(!leftOpen);
   };
 
+  const handleClickQuestion = (e: any) => {
+    const question = e.target.innerText.replace("#", "").trim();
+    setQuestion(question);
+  };
+
   const { setIsOpen } = useTour();
-  const [isFirst, setIsFirst] = useState<boolean | null>(null);
+  const [isFirst, setIsFirst] = useState<boolean | null>(true);
 
   useEffect(() => {
     const firstVisit = localStorage.getItem("isFirst") !== "false";
+    // const firstVisit = true;
 
     if (firstVisit) {
       setIsFirst(true);
@@ -265,6 +280,21 @@ export default function Home() {
       <div
         className={`${styles.left_container} ${!leftOpen ? styles.open : ""}`}
       >
+        {/* <div
+          className="tenor-gif-embed"
+          data-postid="10893156"
+          data-share-method="host"
+          data-aspect-ratio="1.68919"
+          data-width="100%"
+        >
+          <a href="https://tenor.com/view/mgm-cat-gif-10893156">Mgm Cat GIF</a>
+          from <a href="https://tenor.com/search/mgm-gifs">Mgm GIFs</a>
+        </div>
+        <script
+          type="text/javascript"
+          async
+          src="https://tenor.com/embed.js"
+        ></script> */}
         <Image
           src={SIDEBARICON}
           width={64}
@@ -280,7 +310,6 @@ export default function Home() {
             <h1>{PUBI}</h1>
           </div>
 
-          {/* TODO: reset 기능 추가 */}
           <button className={styles.reset_btn} onClick={handleReset}>
             RESET
           </button>
@@ -315,7 +344,9 @@ export default function Home() {
             </div>
 
             <div
-              className={`${styles.inputs} ${activeInput ? styles.active : ""}`}
+              className={`${styles.inputs} ${
+                activeInput ? styles.active : ""
+              } tour-input`}
               onDrop={handleDrop}
               onDragOver={handleDragOver}
             >
@@ -347,52 +378,36 @@ export default function Home() {
                 <SENDICON /> SUBMIT
               </button>
             </div>
-
             {/* TODO: 질문 내용 */}
-            <>
+            {/* <>
               {chatHistory.map((msg, i) => {
                 <div key={i}>{msg.content}</div>;
               })}
-            </>
+            </> */}
+            <div className={`${styles.questions} tour-quesion`}>
+              <ul>
+                {questionList.map((question, i) => (
+                  <li key={i} onClick={handleClickQuestion}>
+                    # {question}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className={styles.codelang_wrap}>
+              <FaReact />
+              <BiLogoTypescript />
+              <FaSass />
+            </div>
           </div>
         </div>
       </div>
-
-      <div className={`${styles.right_container}`}>
+      <div className={`${styles.right_container} tour-results`}>
         <div
           className={`${styles.right_box} ${
             loading ? styles.loading : ""
           }  show-code`}
         >
-          {loading ? (
-            <>
-              <p>progressing...</p>
-              <Image src={LOADINGGIF} width={211} height={374} alt="loading" />
-            </>
-          ) : (
-          <CodeBox code={response} />
-
-            // <CodeBox css="css" js="js" text={response} />
-            // {/* {chatHistory.length === 0 ? (
-            //   // TODO: 대충 그럴싸하게 사용 방법 설명?
-            //   <div className={styles.empty}>
-            //     질문을 해야징 대충 어케 되는지 설명해주까?
-            //   </div>
-            // ) : (
-            //   chatHistory.map((message, index) => (
-            //     // TODO: image submit 시 question 어떻게 보여줄지
-            //     <>
-            //       <div
-            //         key={index}
-            //         className={`${styles.message} ${styles[message.role]}`}
-            //       >
-            //         {message.content}
-            //       </div>
-            //       <MarkdownViewer text={message.content} />
-            //     </>
-            //   ))
-            // )} */}
-          )}
+          {loading ? <Loading /> : <CodeBox code={response} />}
         </div>
       </div>
     </>

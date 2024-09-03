@@ -48,6 +48,7 @@
     display: flex;
     flex-direction: column;
     gap: 30px;
+    height: calc(100vh - 380px); // todo: svg 하단 정렬 확인해볼 것
 
     .image_area {
       border: 2px dashed #ccc;
@@ -127,6 +128,24 @@
     cursor: pointer;
   }
 
+  .questions {
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      li {
+        background: #efefef;
+        padding: 2px 10px;
+        cursor: pointer;
+        border-radius: 10px;
+        font-size: 14px;
+        height: 26px;
+        line-height: 26px;
+      }
+    }
+  }
+
   &.open {
     width: 110px;
     align-items: flex-start;
@@ -149,7 +168,20 @@
     }
 
     + .right_container {
-      padding: 30px 30px 30px 130px;
+      // padding: 30px 30px 30px 130px;
+      width: calc(100% - 150px);
+    }
+  }
+
+  .codelang_wrap {
+    display: flex;
+    gap: 5px;
+    height: 30px;
+    align-self: flex-end;
+    opacity: 0.5;
+
+    svg {
+      width: 20px;
     }
   }
 }
@@ -157,17 +189,19 @@
 .right_container {
   display: flex;
   flex-direction: row;
-  width: 100%;
-  padding-left: 570px;
-  padding: 30px 30px 30px 570px;
+  width: calc(100% - 540px);
+  padding: 30px 0;
+  margin-left: auto;
+  // padding-left: 570px;
+  // padding: 30px 30px 30px 570px;
 
   .right_box {
-    width: calc(100% - 30px);
+    width: 100%;
     min-height: calc(100vh - 60px);
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    padding: 15px;
+    padding: 15px 35px;
     gap: 15px;
 
     &.empty {
