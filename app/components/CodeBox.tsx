@@ -28,6 +28,8 @@ const CodeBox = ({ code = "" }: { code?: string }) => {
       if(codeBlock[CODE.CSS] || codeBlock[CODE.JS]) {
         setCodeBlock(result);
       }
+
+      console.log(result, "::: result");
       return;
     }
 

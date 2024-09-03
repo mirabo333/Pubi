@@ -20,10 +20,10 @@ interface IMESSAGE {
 }
 
 const questionList = [
-  "색상에 좀 더 신경써줘",
-  "레이아웃에 좀 더 신경써줘",
-  "이미지를 좀 더 자세히 분석하고 다시 보여줘",
-  "이미지 내부의 컨텐츠를 좀 더 자세히 분석해줘",
+  "방금 전 웹페이지 ui에 지금 보내는 이미지 ui를 추가해줘",
+  "좀 전 ui 코드 다시 보여줘",
+  "두번 이상 사용되는 css의 값을 변수나 mixin으로 변경해줘",
+  "웹 페이지 ui에서 버튼 disabled 처리된 걸로 보여줘",
 ];
 
 export default function Home() {
@@ -325,17 +325,7 @@ export default function Home() {
             >
               {preview ? (
                 <>
-                  <Image
-                    src={preview}
-                    alt="Preview"
-                    width={150}
-                    height={150}
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                      maxWidth: "100%",
-                    }}
-                  />
+                  <Image src={preview} alt="Preview" width={150} height={150} />
                   <button onClick={handleDelete}>delete</button>
                 </>
               ) : (
