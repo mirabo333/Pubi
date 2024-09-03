@@ -18,6 +18,7 @@ const CodeBox = ({
   code?: string;
 }) => {
   const [tab, setTab] = useState<TCode>(CODE.JS);
+  const [previewCss, setPreviewCss] = useState<string>('');
   const [codeBlock, setCodeBlock] = useState<TCodeBlock>({
     js: "",
     css: "",
@@ -38,18 +39,20 @@ const CodeBox = ({
       switch (block.slice(0, 3)) {
         case "jsx":
         case "tsx":
-        case "typescript":
           result.js = block;
           break;
+        case "scs":
+          result.css = block.slice(0, 4) == "scss" ? block : "";
+          break;
         case "css":
-          result.css = block;
+          setPreviewCss(block);
           break;
       }
     });
 
-    // console.log(blocks, ":???");
     setCodeBlock(result);
   }, [code]);
+
 
   const handleTabClick = (tabKey: TCode) => {
     setTab(tabKey);
@@ -69,7 +72,7 @@ const CodeBox = ({
     <>
       <div className="codebox container">
         <div className="preview">
-          <IframeViewer css={codeBlock.css} js={codeBlock.js}></IframeViewer>
+          <IframeViewer css={previewCss} js={codeBlock.js}></IframeViewer>
         </div>
         <ul className="tab-nav">
           {Object.values(CODE).map((value) => (
