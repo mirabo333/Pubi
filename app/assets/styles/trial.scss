@@ -104,10 +104,14 @@
       right: 25px;
       color: rgba(255, 255, 255, 0.5);
       cursor: pointer;
-    }
-    > .icon {
-      filter: invert(43%) sepia(9%) saturate(332%) hue-rotate(186deg)
-        brightness(90%) contrast(89%);
+
+      svg {
+        width: 18px;
+        height: 18px;
+        path {
+          fill: #abb2bf80;
+        }
+      }
     }
   }
 }

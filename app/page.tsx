@@ -137,8 +137,6 @@ export default function Home() {
     setBase64Image("");
     setQuestion("");
     setResetCode(true);
-
-    console.log(response, 78986789);
   };
 
   // 질문하기
@@ -265,15 +263,15 @@ export default function Home() {
   const [isFirst, setIsFirst] = useState<boolean | null>(true);
 
   useEffect(() => {
-    // const firstVisit = localStorage.getItem("isFirst") !== "false";
-    const firstVisit = true;
+    const firstVisit = localStorage.getItem("isFirst") !== "false";
+    // const firstVisit = true;
 
     if (firstVisit) {
-      // setIsFirst(true);
+      setIsFirst(true);
       setIsOpen(true);
       localStorage.setItem("isFirst", "false");
     } else {
-      // setIsFirst(false);
+      setIsFirst(false);
     }
   }, [setIsOpen]);
 
@@ -312,7 +310,6 @@ export default function Home() {
             <h1>{PUBI}</h1>
           </div>
 
-          {/* TODO: reset 기능 추가 */}
           <button className={styles.reset_btn} onClick={handleReset}>
             RESET
           </button>
@@ -381,6 +378,12 @@ export default function Home() {
                 <SENDICON /> SUBMIT
               </button>
             </div>
+            {/* TODO: 질문 내용 */}
+            {/* <>
+              {chatHistory.map((msg, i) => {
+                <div key={i}>{msg.content}</div>;
+              })}
+            </> */}
             <div className={`${styles.questions} tour-quesion`}>
               <ul>
                 {questionList.map((question, i) => (
@@ -395,13 +398,6 @@ export default function Home() {
               <BiLogoTypescript />
               <FaSass />
             </div>
-
-            {/* TODO: 질문 내용 */}
-            {/* <>
-              {chatHistory.map((msg, i) => {
-                <div key={i}>{msg.content}</div>;
-              })}
-            </> */}
           </div>
         </div>
       </div>
@@ -411,32 +407,7 @@ export default function Home() {
             loading ? styles.loading : ""
           }  show-code`}
         >
-          {loading ? (
-            <Loading />
-          ) : (
-            <CodeBox code={response} />
-
-            // <CodeBox css="css" js="js" text={response} />
-            // {/* {chatHistory.length === 0 ? (
-            //   // TODO: 대충 그럴싸하게 사용 방법 설명?
-            //   <div className={styles.empty}>
-            //     질문을 해야징 대충 어케 되는지 설명해주까?
-            //   </div>
-            // ) : (
-            //   chatHistory.map((message, index) => (
-            //     // TODO: image submit 시 question 어떻게 보여줄지
-            //     <>
-            //       <div
-            //         key={index}
-            //         className={`${styles.message} ${styles[message.role]}`}
-            //       >
-            //         {message.content}
-            //       </div>
-            //       <MarkdownViewer text={message.content} />
-            //     </>
-            //   ))
-            // )} */}
-          )}
+          {loading ? <Loading /> : <CodeBox code={response} />}
         </div>
       </div>
     </>

@@ -3,25 +3,30 @@ import { useEffect, useState } from "react";
 const IframeViewer = ({
   css,
   js,
-}: // children,
+}:
 {
   css?: string;
   js?: string;
-  // children?: string;
 }) => {
   const [iFrame, setIFrame] = useState<any>(null);
   const [jsString, setJsString] = useState<string>("");
+
 
   useEffect(() => {
     const frame: HTMLIFrameElement = document.getElementById(
       "iframe-preview"
     ) as HTMLIFrameElement;
-
+  
     setIFrame(frame.contentWindow?.document || null);
   }, []);
 
   useEffect(() => {
     if (!js) {
+      if(iFrame) {
+        iFrame.open();
+        iFrame.write("");
+        iFrame.close();
+      }
       return;
     }
 
@@ -33,7 +38,7 @@ const IframeViewer = ({
   }, [js]);
 
   useEffect(() => {
-    if (!jsString) {
+    if (!jsString || !css) {
       return;
     }
 
@@ -61,8 +66,9 @@ const IframeViewer = ({
         </style>
       </body>
     </html>`;
+    
     setPreview(html);
-  }, [jsString]);
+  }, [jsString, css]);
 
   const setPreview = (html: string) => {
     if (iFrame) {

@@ -1,45 +1,35 @@
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import MarkdownViewer from "./MarkdownViewer";
 import IframeViewer from "./IframeViewer";
 import COPYICON from "@/app/assets/images/ic-copy.svg";
 
 const CODE = {
-  HTML: "html",
-  CSS: "css",
   JS: "js",
+  CSS: "css",
 } as const;
 type TCode = (typeof CODE)[keyof typeof CODE];
 type TCodeBlock = {
   [key in TCode]: string;
 };
 
-const CodeBox = ({
-  // // html = "",
-  // css = "",
-  // js = "",
-  code = "",
-}: {
-  // // html?: string;
-  // css?: string;
-  // js?: string;
-  code?: string;
-}) => {
-  const [tab, setTab] = useState<TCode>(CODE.HTML);
+const CodeBox = ({ code = "" }: { code?: string }) => {
+  const [tab, setTab] = useState<TCode>(CODE.JS);
+  const [previewCss, setPreviewCss] = useState<string>("");
   const [codeBlock, setCodeBlock] = useState<TCodeBlock>({
-    html: "",
-    css: "",
     js: "",
+    css: "",
   });
 
   useEffect(() => {
-    if (!code) return;
-
-    const result: TCodeBlock = { html: "", css: "", js: "" };
-
+    const result: TCodeBlock = { js: "", css: "" };
     const blocks = code?.split("```") || [];
 
-    // console.log(text, "::: text");
+    if (!code) {
+      if (codeBlock.css || codeBlock.js) {
+        setCodeBlock(result);
+      }
+      return;
+    }
 
     blocks.forEach((block) => {
       switch (block.slice(0, 3)) {
@@ -47,25 +37,17 @@ const CodeBox = ({
         case "tsx":
           result.js = block;
           break;
-        case "css":
-          result.css = block;
+        case "scs":
+          result.css = block.slice(0, 4) == "scss" ? block : "";
           break;
-        // case "htm":
-        //   cd.html = block;
-        //   break;
+        case "css":
+          setPreviewCss(block);
+          break;
       }
     });
 
-    console.log(blocks, ":???");
-    // console.log(cd, ":::cd");
-
-    // if (resetCode) {
-    //   setCodeBlock({ css: "", js: "" });
-    // } else {
-    //   setCodeBlock((prev) => ({ ...prev, ...cd }));
-    // }
-
     setCodeBlock(result);
+    // eslint-disable-next-line
   }, [code]);
 
   const handleTabClick = (tabKey: TCode) => {
@@ -91,24 +73,6 @@ const CodeBox = ({
         </div>
         <div className="tour-codebox">
           <ul className="tab-nav">
-            {/* <li
-            className={tab == "html" ? "on" : ""}
-            onClick={() => handleTabClick("html")}
-          >
-            html
-          </li> */}
-            <li
-              className={tab == "js" ? "on" : ""}
-              onClick={() => handleTabClick("js")}
-            >
-              js
-            </li>
-            <li
-              className={tab == "css" ? "on" : ""}
-              onClick={() => handleTabClick("css")}
-            >
-              css
-            </li>
             {Object.values(CODE).map((value) => (
               <li
                 key={`codebox-tab-key-${value}`}
@@ -120,18 +84,11 @@ const CodeBox = ({
             ))}
           </ul>
           <div className="tab-content">
-            {/* {text && (
-            <button className="copy-btn" onClick={handleCopy}>
-              copy
-            </button>
-          )} */}
-            <Image
-              src={COPYICON}
-              alt="Copy"
-              width={18}
-              height={18}
-              className="icon"
-            />
+            {codeBlock[tab] && (
+              <button className="copy-btn" onClick={handleCopy}>
+                <COPYICON />
+              </button>
+            )}
             <MarkdownViewer text={"```" + codeBlock[tab] + "```"} />
           </div>
         </div>
