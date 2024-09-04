@@ -30,6 +30,7 @@ export default function Home() {
   const [question, setQuestion] = useState("");
   const [chatHistory, setChatHistory] = useState<IMESSAGE[] | []>([]);
   const [questionHisroty, setQuestionHistory] = useState<string[]>([]);
+  const [presetIndex, setPresetIndex] = useState<number>(0);
 
   // const [image, setImage] = useState<File | null>(null);
   const [base64Image, setBase64Image] = useState<string>("");
@@ -43,7 +44,7 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [leftOpen, setLeftOpen] = useState<boolean>(true);
-  const [resetCode, setResetCode] = useState<boolean>(false);
+  // const [resetCode, setResetCode] = useState<boolean>(false);
 
   const PUBI = `</PUBI>`;
 
@@ -136,7 +137,7 @@ export default function Home() {
     setPreview(null);
     setBase64Image("");
     setQuestion("");
-    setResetCode(true);
+    // setResetCode(true);
   };
 
   // 질문하기
@@ -169,7 +170,7 @@ export default function Home() {
       });
 
       const data = await response.json();
-      console.log(JSON.stringify(data), 676767676666);
+      // console.log(JSON.stringify(data), 676767676666);
       setResponse(data.answer);
 
       const assistantMessage: IMESSAGE = {
@@ -238,14 +239,52 @@ export default function Home() {
     event.preventDefault();
   };
 
-  const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTextChange = (value: string) => {
     // console.log(1);
-    setQuestion(event.target.value);
+    setQuestion(value);
   };
 
+  const handleArrowUp = () => {
+    if (questionHisroty.length == 0) {
+      return;
+    } 
+    else if(presetIndex > 0) {
+      const index = presetIndex - 1;
+      handleTextChange(questionHisroty[index]);
+      setPresetIndex(index);
+    }
+    else {
+      return;
+    }
+  }
+
+  const handleArrowDown = () => {
+    if (questionHisroty.length == 0) {
+      return;
+    }
+    else if (presetIndex < questionHisroty.length - 1) {
+      const index = presetIndex + 1;
+      handleTextChange(questionHisroty[index])
+      setPresetIndex(index)
+    }
+    else {
+      setPresetIndex(questionHisroty.length)
+      handleTextChange("")
+    }
+  }
+
   const handleKeyPress = (e: any) => {
-    if (e.key === "Enter") {
-      handleSubmit();
+    switch(e.key) {
+      case "Enter":
+        handleSubmit();
+        break;
+      case "ArrowUp":
+        handleArrowUp()
+        break;
+      case "ArrowDown":
+        handleArrowDown()
+        break;
     }
   };
 
@@ -274,6 +313,10 @@ export default function Home() {
       setIsFirst(false);
     }
   }, [setIsOpen]);
+
+  useEffect(() => {
+    setPresetIndex(questionHisroty.length);
+  }, [questionHisroty])
 
   return (
     <>
@@ -362,7 +405,7 @@ export default function Home() {
               <input
                 placeholder="Enter text here"
                 value={question}
-                onChange={handleTextChange}
+                onChange={(e) => handleTextChange(e.target.value)}
                 onKeyDown={(e) => handleKeyPress(e)}
                 onFocus={() => setActiveInput(true)}
                 onBlur={() => setActiveInput(false)}
