@@ -20,12 +20,13 @@ interface IMESSAGE {
   content: string;
 }
 
-const questionList = [
-  "방금 전 웹페이지 ui에 지금 보내는 이미지 ui를 추가해줘",
-  "좀 전 ui 코드 다시 보여줘",
-  "두번 이상 사용되는 css의 값을 변수나 mixin으로 변경해줘",
-  "웹 페이지 ui에서 버튼 disabled 처리된 걸로 보여줘",
-];
+// const questionList = [
+//   "좀 전 ui코드에 이 이미지와 동일한 ui에 추가 반영해줘",
+//   "좀 전 ui 코드 다시 보여줘",
+//   "지금 그 컴포넌트를 사용해서 이미지를 웹 ui로 구현해줘",
+//   "두번 이상 사용되는 css의 값을 변수나 mixin으로 변경해줘",
+//   "웹 페이지 ui에서 버튼 disabled 처리된 걸로 보여줘",
+// ];
 
 export default function Home() {
   const [question, setQuestion] = useState("");
@@ -379,7 +380,7 @@ export default function Home() {
                 <div key={i}>{msg.content}</div>;
               })}
             </> */}
-            <div className={`${styles.questions} tour-quesion`}>
+            {/* <div className={`${styles.questions} tour-quesion`}>
               <ul>
                 {questionList.map((question, i) => (
                   <li key={i} onClick={handleClickQuestion}>
@@ -387,7 +388,7 @@ export default function Home() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </div> */}
             <div className={styles.codelang_wrap}>
               <FaReact />
               <BiLogoTypescript />

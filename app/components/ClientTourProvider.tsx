@@ -27,16 +27,16 @@ export const steps: StepType[] = [
     ),
     position: "right",
   },
-  {
-    selector: ".tour-quesion",
-    content: (
-      <div className="tour-style">
-        자주 하는 질문들을 모아 놓았습니다. 원하는 질문을 클릭해서 좀 더 쉽게
-        질문할 수 있습니다.
-      </div>
-    ),
-    position: "right",
-  },
+  // {
+  //   selector: ".tour-quesion",
+  //   content: (
+  //     <div className="tour-style">
+  //       자주 하는 질문들을 모아 놓았습니다. 원하는 질문을 클릭해서 좀 더 쉽게
+  //       질문할 수 있습니다.
+  //     </div>
+  //   ),
+  //   position: "right",
+  // },
   {
     selector: ".tour-results",
     content: (
