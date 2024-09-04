@@ -13,6 +13,7 @@ import { useTour } from "@reactour/tour";
 import { FaReact, FaSass } from "react-icons/fa";
 import { BiLogoTypescript } from "react-icons/bi";
 import Loading from "./components/Loading";
+import { FaRegTrashCan } from "react-icons/fa6";
 
 interface IMESSAGE {
   role: string;
@@ -20,19 +21,18 @@ interface IMESSAGE {
 }
 
 const questionList = [
-  "색상에 좀 더 신경써줘",
-  "레이아웃에 좀 더 신경써줘",
-  "이미지를 좀 더 자세히 분석하고 다시 보여줘",
-  "이미지 내부의 컨텐츠를 좀 더 자세히 분석해줘",
+  "방금 전 웹페이지 ui에 지금 보내는 이미지 ui를 추가해줘",
+  "좀 전 ui 코드 다시 보여줘",
+  "두번 이상 사용되는 css의 값을 변수나 mixin으로 변경해줘",
+  "웹 페이지 ui에서 버튼 disabled 처리된 걸로 보여줘",
 ];
 
 export default function Home() {
   const [question, setQuestion] = useState("");
-  const [chatHistory, setChatHistory] = useState<IMESSAGE[] | []>([]);
+  // const [chatHistory, setChatHistory] = useState<IMESSAGE[] | []>([]);
   const [questionHisroty, setQuestionHistory] = useState<string[]>([]);
   const [presetIndex, setPresetIndex] = useState<number>(0);
 
-  // const [image, setImage] = useState<File | null>(null);
   const [base64Image, setBase64Image] = useState<string>("");
   const [response, setResponse] = useState<string | undefined>("");
 
@@ -148,13 +148,15 @@ export default function Home() {
     setQuestion("");
 
     const userMessage: IMESSAGE = { role: "user", content: question };
-    setChatHistory([...chatHistory, userMessage]);
+    // setChatHistory([...chatHistory, userMessage]);
     setQuestionHistory([...questionHisroty, userMessage.content]);
-
-    console.log(chatHistory, "::: chat history");
 
     console.log(userMessage, "::: userMessage");
 
+    if (base64Image) {
+      console.log(question, 56789);
+      // question = `기존 코드에서 추가하는 거야 ${question}`;
+    }
     const formData: any = {
       question: question ? question : "",
       image: base64Image ? base64Image : "",
@@ -163,6 +165,7 @@ export default function Home() {
     try {
       // 로딩
       setLoading(true);
+
       const response = await fetch("/api/imageai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -173,21 +176,21 @@ export default function Home() {
       // console.log(JSON.stringify(data), 676767676666);
       setResponse(data.answer);
 
-      const assistantMessage: IMESSAGE = {
-        role: "assistant",
-        content: data.answer,
-      };
+      // const assistantMessage: IMESSAGE = {
+      //   role: "assistant",
+      //   content: data.answer,
+      // };
 
-      console.log(assistantMessage, ":::assistantMessage");
+      // console.log(assistantMessage, ":::assistantMessage");
 
-      if (response.ok) {
-        setChatHistory((prevChatHistory) => [
-          ...prevChatHistory,
-          assistantMessage,
-        ]);
-      } else {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+      // if (response.ok) {
+      //   setChatHistory((prevChatHistory) => [
+      //     ...prevChatHistory,
+      //     assistantMessage,
+      //   ]);
+      // } else {
+      //   throw new Error(`HTTP error! Status: ${response.status}`);
+      // }
     } catch (error) {
       console.error("Error:", error);
       setResponse("An error occurred while processing the request.");
@@ -368,18 +371,10 @@ export default function Home() {
             >
               {preview ? (
                 <>
-                  <Image
-                    src={preview}
-                    alt="Preview"
-                    width={150}
-                    height={150}
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                      maxWidth: "100%",
-                    }}
-                  />
-                  <button onClick={handleDelete}>delete</button>
+                  <Image src={preview} alt="Preview" width={150} height={150} />
+                  <button onClick={handleDelete}>
+                    <FaRegTrashCan />
+                  </button>
                 </>
               ) : (
                 <p>Drag & drop an image here, or click to select one</p>

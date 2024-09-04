@@ -24,8 +24,14 @@ const CodeBox = ({ code = "" }: { code?: string }) => {
     const result: TCodeBlock = { [CODE.JS]: "", [CODE.CSS]: "" };
     const blocks = code?.split("```") || [];
 
+    console.log(code, "::: code");
+    console.log(result, "::: result");
+    console.log(blocks, "::: blocks");
+
+    console.warn(CODE, "::: CODE");
+
     if (!code) {
-      if(codeBlock[CODE.CSS] || codeBlock[CODE.JS]) {
+      if (codeBlock[CODE.CSS] || codeBlock[CODE.JS]) {
         setCodeBlock(result);
       }
       return;

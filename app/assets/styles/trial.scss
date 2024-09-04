@@ -92,7 +92,8 @@
     background-color: #282c34;
     border-radius: 0 10px 10px 10px;
     // height: calc(50% - 50px);
-    height: 400px;
+    min-height: 400px;
+    height: calc(100vh - 570px);
     padding: 1em;
     position: relative;
 
